@@ -20,9 +20,14 @@
     ```
     go get github.com/spf13/viper
     ```
-download bcrypt for hashing password
+ * download bcrypt for hashing password
 ```
 golang.org/x/crypto/bcrypt
+```
+
+* download validator v10 untuk validasi struct
+```
+github.com/go-playground/validator/v10
 ```
 * create file `local.env`
     ```
