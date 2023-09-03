@@ -14,7 +14,7 @@ func main() {
 	cfg := config.InitConfig()
 	dbMysql := database.InitDBMysql(cfg)
 	database.InitialMigration(dbMysql)
-	database.RunSeeder(dbMysql)
+	// database.RunSeeder(dbMysql)
 
 	// create a new echo instance
 	e := echo.New()
