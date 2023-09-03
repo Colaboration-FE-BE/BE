@@ -1,0 +1,3009 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "alta-dash-4",
+        "description": "Alterra Academy Dashboard Project",
+        "termsOfService": "http://example.com/terms/",
+        "contact": {
+            "name": "API Support",
+            "url": "http://www.example.com/support",
+            "email": "support@example.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.1"
+    },
+    "servers": [
+        {
+            "description": "SwaggerHub API Auto Mocking",
+            "url": "https://virtserver.swaggerhub.com/altadash4/altadash4/1.1",
+            "variables": {
+                "environment": {
+                    "default": "dev",
+                    "enum": [
+                        "prod",
+                        "dev"
+                    ]
+                }
+            }
+        }
+    ],
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Identifikasi data pengguna"
+        },
+        {
+            "name": "Users",
+            "description": "Pengguna aplikasi yang kita bangun(Tim Internal)"
+        },
+        {
+            "name": "Class",
+            "description": "Kelompok Belajar"
+        },
+        {
+            "name": "Mentee",
+            "description": "Student yang join ke program immersive"
+        },
+        {
+            "name": "Feedback",
+            "description": "Laporan untuk mentee dari kegiatan yang sedang berjalan"
+        }
+    ],
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "login user",
+                "description": "Login to system",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/requestLogin"
+                            },
+                            "examples": {
+                                "userData1": {
+                                    "description": "Example Authentication user",
+                                    "value": {
+                                        "email": "admin@alterra.co.id",
+                                        "password": "password"
+                                    }
+                                },
+                                "userData2": {
+                                    "description": "Example data user",
+                                    "value": {
+                                        "email": "alta2@alterra.id",
+                                        "password": "password"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/responseLoginSuccess"
+                                },
+                                "examples": {
+                                    "responseData1": {
+                                        "description": "response success 1",
+                                        "value": {
+                                            "code": 200,
+                                            "status": "success",
+                                            "message": "Login Success",
+                                            "data": {
+                                                "id": "kdsjjaakdajadskadjakaka",
+                                                "full_name": "super admin",
+                                                "email": "altera@academy.co.id",
+                                                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co",
+                                                "team": "Placement",
+                                                "role": "admin"
+                                            }
+                                        }
+                                    },
+                                    "responseData2": {
+                                        "description": "response success 2",
+                                        "value": {
+                                            "code": 200,
+                                            "status": "success",
+                                            "message": "Login Success",
+                                            "data": {
+                                                "token": "AyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2MzgzMjYxODAsInVzZXJJZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.AebFR-oQjUSOMez2ucDWkiMrS2eQIPmcYm5c71qZ_co"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/{user_id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Get User by ID",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "description": "id user",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/getUserProfileSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/getUserProfileFailed"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Edit user profile",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "description": "id user",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/requestPostUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/responseUpdateUserSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/responseUpdateFailed"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Delete User by ID",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "description": "id user",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/responseDeleteUserSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/responseDeleteUserFailed"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Get all User",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/getAllUsersSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/getAllUsersFailed"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Add New User",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/requestPostUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/responsePostUserSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/responsePostUserFailed"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "description": "Update user profile",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/requestPostUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/responseUpdateUserByTokenSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/responseUpdateUserByTokenFailed"
+                    }
+                }
+            }
+        },
+        "/classes": {
+            "get": {
+                "tags": [
+                    "Class"
+                ],
+                "description": "Get all Classes",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/getAllClassSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/getAllClassFailed"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Class"
+                ],
+                "description": "Register New Class",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/requestPostClass"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/responsePostClassSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/responsePostUserFailed"
+                    }
+                }
+            }
+        },
+        "/classes{class_id}": {
+            "get": {
+                "tags": [
+                    "Class"
+                ],
+                "description": "Get User by ID",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "class_id",
+                        "description": "id class",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/getClassDetailSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/getClassDetailFailed"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Class"
+                ],
+                "description": "Update Specific class information",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "class_id",
+                        "description": "id class",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/requestPostClass"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/responsePuttClassSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/responsePostUserFailed"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Class"
+                ],
+                "description": "Deactive specific class",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "class_id",
+                        "description": "id class",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/responseDeleteClassSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/responseDeleteUserFailed"
+                    }
+                }
+            }
+        },
+        "/mentee": {
+            "get": {
+                "tags": [
+                    "Mentee"
+                ],
+                "description": "Get all Mentee",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "responses": {
+                    
+                    "200": {
+                        "description":"Get All Mentee",
+                        "content":{
+                            "application/json":{
+                                "schema":{
+                                    "$ref": "#/components/responses/getAllMenteeSuccess"
+                                }
+                            }
+                        }
+                 
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/getAllBookFailed"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Mentee"
+                ],
+                "description": "Register New Mentee",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "full_name": {
+                                        "type": "string",
+                                        "example": "Mahmuda Karima"
+                                    },
+                                    "nick_name": {
+                                        "type": "string",
+                                        "example": "Daka"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "example": "daka@gmail.com"
+                                    },
+                                    "current_address": {
+                                        "type": "string",
+                                        "example": "daka@gmail.com"
+                                    },
+                                    "home_address": {
+                                        "type": "string",
+                                        "example": "daka@gmail.com"
+                                    },
+                                    "telegram": {
+                                        "type": "string",
+                                        "example": "daka@gmail.com"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "example": "L"
+                                    },
+                                    "education_type": {
+                                        "type": "string",
+                                        "example": "non-informatics"
+                                    },
+                                    "major": {
+                                        "type": "string",
+                                        "example": "akuntansi"
+                                    },
+                                    "graduate": {
+                                        "type": "string",
+                                        "example": "2022"
+                                    },
+                                    "institution": {
+                                        "type": "string",
+                                        "example": "SMA 1 Palembang"
+                                    },
+                                    "emergency_name": {
+                                        "type": "string",
+                                        "example": "bapak ku"
+                                    },
+                                    "emergency_phone": {
+                                        "type": "string",
+                                        "example": "089829229"
+                                    },
+                                    "emergency_status": {
+                                        "type": "string",
+                                        "example": "orang tua"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "interview"
+                                    },
+                                    "class_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/responseRegisterMenteeSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/responseFailed"
+                    }
+                }
+            }
+        },
+        "/feedbacks": {
+            "post": {
+                "tags": [
+                    "Feedback"
+                ],
+                "description": "Register Feedback for mentees",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/requestPostFeedback"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/responsePostFeedbackSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/responsePostUserFailed"
+                    }
+                }
+            }
+        },
+        "/feedbacks/{feedback_id}": {
+            "put": {
+                "tags": [
+                    "Feedback"
+                ],
+                "description": "Update Selected feedback",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "feedback_id",
+                        "description": "id class",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        },
+                        "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/requestPostFeedback"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/responsePostFeedbackSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/responsePostUserFailed"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Feedback"
+                ],
+                "description": "Unregister specific feedback",
+                "security": [
+                    {
+                        "JWTAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "feedback_id",
+                        "description": "id class",
+                        "in": "path",
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/responseDeleteFeedbackSuccess"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/responseDeleteUserFailed"
+                    }
+                }
+            }
+        }
+    },
+    
+    "components": {
+        "securitySchemes": {
+            "JWTAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "description": "use Token"
+            }
+        },
+        "schemas": {
+            "requestLogin": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                }
+            },
+            "requestPostFeedback": {
+                "type": "object",
+                "properties": {
+                    "notes": {
+                        "type": "string",
+                        "example": "notes"
+                    },
+                    "proof": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "id_user": {
+                        "type": "string",
+                        "example": "stringrandomuser"
+                    },
+                    "id_mentee": {
+                        "type": "string",
+                        "example": "stringrandommentee"
+                    },
+                    "id_status": {
+                        "type": "integer",
+                        "example": 7
+                    }
+                }
+            },
+            "requestPostClass": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "example": "BE 13"
+                    },
+                    "pic": {
+                        "type": "integer",
+                        "example": 7
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "example": "2022-06-10"
+                    },
+                    "graduate_date": {
+                        "type": "string",
+                        "example": "2022-08-30"
+                    }
+                }
+            },
+            "requestPostUser": {
+                "type": "object",
+                "properties": {
+                    "full_name": {
+                        "type": "string",
+                        "example": "Iswanul Umam"
+                    },
+                    "email": {
+                        "type": "string",
+                        "example": "umam@alterra.id"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "password123"
+                    },
+                    "role": {
+                        "type": "string",
+                        "example": "admin"
+                    },
+                    "id_team": {
+                        "type": "integer",
+                        "example": 1
+                    }
+                }
+            },
+            "requestUserData": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "email": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "address": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                }
+            },
+            "requestRegister": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "password": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                }
+            },
+            "responseUserData": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "minLength": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "email": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "address": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                }
+            },
+            "successGetSingleUserResponse": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "number"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "successGetAllUserResponse": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "number"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "example": "Rich Dad Poor Dad"
+                                },
+                                "file_foto": {
+                                    "type": "string",
+                                    "example": "sdJksHJ12ks.jpg"
+                                },
+                                "rent_price": {
+                                    "type": "integer",
+                                    "example": 500
+                                },
+                                "address": {
+                                    "type": "string",
+                                    "example": "Depok"
+                                },
+                                "author": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 3
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Robert Kiyosaki"
+                                        }
+                                    }
+                                },
+                                "publisher": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "name": {
+                                            "type": "integer",
+                                            "example": "Gramedia"
+                                        }
+                                    }
+                                },
+                                "category": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 4
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Motivasi"
+                                        }
+                                    }
+                                },
+                                "is_available": {
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "requestBook": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "category_id": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "author_id": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "publisher_id": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "publish_year": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "quantity": {
+                        "type": "number",
+                        "minLength": 1
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                }
+            },
+            "responseGetAllUsersSuccess": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "number"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "example": "Rich Dad Poor Dad"
+                                },
+                                "file_foto": {
+                                    "type": "string",
+                                    "example": "sdJksHJ12ks.jpg"
+                                },
+                                "rent_price": {
+                                    "type": "integer",
+                                    "example": 500
+                                },
+                                "address": {
+                                    "type": "string",
+                                    "example": "Depok"
+                                },
+                                "author": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 3
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Robert Kiyosaki"
+                                        }
+                                    }
+                                },
+                                "publisher": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "name": {
+                                            "type": "integer",
+                                            "example": "Gramedia"
+                                        }
+                                    }
+                                },
+                                "category": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 4
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Motivasi"
+                                        }
+                                    }
+                                },
+                                "is_available": {
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responseLoginSuccess": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "number"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "data": {
+                        "type": "object"
+                    }
+                }
+            },
+            "successResponse": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "number"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            },
+            "failedResponse": {
+                "type": "object",
+                "properties": {
+                    "code": {
+                        "type": "number"
+                    },
+                    "message": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "requestBodies": {
+            "userData": {
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/requestUserData",
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "example": "Alta"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "example": "alta@mail.com"
+                                },
+                                "password": {
+                                    "type": "string",
+                                    "example": "inipassword"
+                                },
+                                "address": {
+                                    "type": "string",
+                                    "example": "Jakarta"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "responses": {
+            "responseUpdateUserSuccess": {
+                "description": "Success Update user profile",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Successful Operation"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 7
+                                        },
+                                        "team": {
+                                            "type": "string",
+                                            "example": "Academic"
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "dian"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "umam@alterra.id"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "example": "admin"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responseUpdateFailed": {
+                "description": "register failed",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 400
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "failed"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Bad Request"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responseDeleteUserSuccess": {
+                "description": "Successful Operation",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 200
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success deactive account"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "example": null
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responseDeleteUserFailed": {
+                "description": "register failed",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 400
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "failed"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Bad Request"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responseUpdateUserByTokenSuccess": {
+                "description": "Success register new user",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 200
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Successful Operation"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 7
+                                        },
+                                        "team": {
+                                            "type": "string",
+                                            "example": "Academic"
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Iswanul Umam"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "umam@alterra.id"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "example": "admin"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responseUpdateUserByTokenFailed": {
+                "description": "register failed",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 400
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "failed"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Bad Request"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responsePutFeedbackSuccess": {
+                "description": "Success update feedback",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success add feedback"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "notes": {
+                                            "type": "string",
+                                            "example": "update notes untuk yang bersangkutan"
+                                        },
+                                        "users": {
+                                            "type": "string",
+                                            "example": "Jerry"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Join"
+                                        },
+                                        "proof": {
+                                            "type": "string",
+                                            "example": "https://images.app.goo.gl/t5b981L6oUTU3fE18"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responsePostFeedbackSuccess": {
+                "description": "Success add feedback",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success add feedback"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "notes": {
+                                            "type": "string",
+                                            "example": "Ini bagian notes untuk mentee yang bersangkutan"
+                                        },
+                                        "users": {
+                                            "type": "string",
+                                            "example": "Jerry"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Join"
+                                        },
+                                        "proof": {
+                                            "type": "string",
+                                            "example": "https://images.app.goo.gl/t5b981L6oUTU3fE18"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responsePostClassSuccess": {
+                "description": "Success register new class",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success create new class"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 8
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "BE 13"
+                                        },
+                                        "pic": {
+                                            "type": "string",
+                                            "example": "fakhry"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responsePuttClassSuccess": {
+                "description": "Success update specific class",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success create new class"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 8
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "BE 13"
+                                        },
+                                        "start_date": {
+                                            "type": "string",
+                                            "example": "2022-09-05"
+                                        },
+                                        "graduate_date": {
+                                            "type": "string",
+                                            "example": "2022-11-08"
+                                        },
+                                        "pic": {
+                                            "type": "string",
+                                            "example": "fakhry"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responseDeleteFeedbackSuccess": {
+                "description": "Success unregister feedback",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success unregister feedback"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 8
+                                        },
+                                        "notes": {
+                                            "type": "string",
+                                            "example": "Ini bagian notes untuk mentee yang bersangkutan"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responseDeleteClassSuccess": {
+                "description": "Success delete specific class",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success delete specific class"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 8
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "BE 13"
+                                        },
+                                        "pic": {
+                                            "type": "string",
+                                            "example": "fakhry"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responsePostUserSuccess": {
+                "description": "Success register new user",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 200
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Successful Operation"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 7
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Iswanul Umam"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "umam@alterra.id"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "example": "admin"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responsePostUserFailed": {
+                "description": "register failed",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 400
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "failed"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Bad Request"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responseRegisterMenteeSuccess": {
+                "description": "success register new mentee",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 201
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "success register new mentee"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 3
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Mahmud Karima"
+                                        },
+                                        "nick_name": {
+                                            "type": "string",
+                                            "example": "Mahmud Karima"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "Mahmud Karima"
+                                        },
+                                        "phone": {
+                                            "type": "string",
+                                            "example": "081234567"
+                                        },
+                                        "telegram": {
+                                            "type": "string",
+                                            "example": "@daka"
+                                        },
+                                        "gender": {
+                                            "type": "string",
+                                            "example": "L"
+                                        }
+                                        
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responseSuccess": {
+                "description": "Successful Operation",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 200
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Successful Operation"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responseFailed": {
+                "description": "register failed",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 400
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "failed"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Bad Request"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "loginSuccess": {
+                "description": "login success",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 200
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Login Success"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 11234567890
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "super admin altera"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "admin@altera.co.id"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJ1c2VySWQiOjExfQ.YQ47sxFkIfbDVyQ5o6ix38w4BYxnNOPG3F5isqkyyv8"
+                                        },
+                                        "team": {
+                                            "type": "string",
+                                            "example": "Placement"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "example": "user"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "loginFailed": {
+                "description": "login failed",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 400
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Login Failed"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getClassesSuccess": {
+                "description": "Success get class",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 200
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Get User Profile"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "pic": {
+                                                "type": "string",
+                                                "example": "Fakhry"
+                                            },
+                                            "start_date": {
+                                                "type": "string",
+                                                "example": "2022-06-10"
+                                            },
+                                            "graduate_date": {
+                                                "type": "string",
+                                                "example": "2022-08-30"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getClassesFailed": {
+                "description": "fail to get user profile",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 400
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "failed"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Get User Profile"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getClassDetailSuccess": {
+                "description": "Success get specific class information",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success get specific class information"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "BE 11"
+                                        },
+                                        "pic": {
+                                            "type": "string",
+                                            "example": "Fakhry"
+                                        },
+                                        "start_date": {
+                                            "type": "string",
+                                            "example": "2022-06-10"
+                                        },
+                                        "end_date": {
+                                            "type": "string",
+                                            "example": "2022-08-30"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getClassDetailFailed": {
+                "description": "fail to get detail class",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 400
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "failed"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Get User Profile"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getUserProfileSuccess": {
+                "description": "success get user profile",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 200
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Get User Profile"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "example": "stringrandom"
+                                        },
+                                        "full_name": {
+                                            "type": "string",
+                                            "example": "Alta"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "alta@mail.com"
+                                        },
+                                        "team": {
+                                            "type": "string",
+                                            "example": "Academic"
+                                        },
+                                        "role": {
+                                            "type": "string",
+                                            "example": "admin"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getUserProfileFailed": {
+                "description": "fail to get user profile",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 400
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "failed"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Get User Profile"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "editUserProfileSuccess": {
+                "description": "success change user profile",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Update Profile"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "editUserProfileFailed": {
+                "description": "fail to change user profile",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Update Profile"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "editUserPasswordSuccess": {
+                "description": "success change password",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Change Password"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "editUserPasswordFailed": {
+                "description": "fail to change password",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Change Password"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "logoutSuccess": {
+                "description": "success logout",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Logout Success"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "logoutFailed": {
+                "description": "fail to logout",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Logout Failed"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "inputBookRatingSuccess": {
+                "description": "success give book rating",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Give Book Rating"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "inputBookRatingFailed": {
+                "description": "fail to give book rating",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Give Book Rating"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "inputBorrowerRatingSuccess": {
+                "description": "success give borrower rating",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Give Borrower Rating"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "inputBorrowerRatingFailed": {
+                "description": "fail to give Borrower rating",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Give Borrower Rating"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "insertBookSuccess": {
+                "description": "success insert book",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Insert Book"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "insertBookFailed": {
+                "description": "fail to insert book",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Insert Book"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getAllClassSuccess": {
+                "description": "success get all class",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Get Class"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "BE 11"
+                                            },
+                                            "pic": {
+                                                "type": "string",
+                                                "example": "Fakhry"
+                                            },
+                                            "start_date": {
+                                                "type": "string",
+                                                "example": "2022-06-10"
+                                            },
+                                            "graduate_date": {
+                                                "type": "string",
+                                                "example": "2022-08-30"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getAllClassFailed": {
+                "description": "fail to get all class",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Get All Book"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getAllUsersSuccess": {
+                "description": "success get all users",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Get All Users"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "string",
+                                                "example": "stringrandompanjang"
+                                            },
+                                            "full_name": {
+                                                "type": "string",
+                                                "example": "dian"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "dian@gmail.com"
+                                            },
+                                            "team": {
+                                                "type": "string",
+                                                "example": "Placement"
+                                            },
+                                            "role": {
+                                                "type": "string",
+                                                "example": "default"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getAllUsersFailed": {
+                "description": "fail to get all users",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Get All Book"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getAllMenteeSuccess": {
+                "description": "Success get all mentee",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success get all mentee"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items":{
+                                        "allOf": [
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "class": {
+                                                        "type": "string",
+                                                        "example": "BE 11"
+                                                    },
+                                                    "full_name": {
+                                                        "type": "string",
+                                                        "example": "M. Yusup"
+                                                    },
+                                                    "nick_name": {
+                                                        "type": "string",
+                                                        "example": "Yusup"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "On Class"
+                                                    },
+                                                    "education_type": {
+                                                        "type": "string",
+                                                        "example": "non-informatics"
+                                                    },
+                                                    "gender": {
+                                                        "type": "string",
+                                                        "example": "L"
+                                                    }
+                                                }
+                                        
+                                            },
+                                            {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "class": {
+                                                        "type": "string",
+                                                        "example": "BE 11"
+                                                    },
+                                                    "full_name": {
+                                                        "type": "string",
+                                                        "example": "M. Yusup"
+                                                    },
+                                                    "nick_name": {
+                                                        "type": "string",
+                                                        "example": "Yusup"
+                                                    },
+                                                    "status": {
+                                                        "type": "string",
+                                                        "example": "On Class"
+                                                    },
+                                                    "education_type": {
+                                                        "type": "string",
+                                                        "example": "non-informatics"
+                                                    },
+                                                    "gender": {
+                                                        "type": "string",
+                                                        "example": "L"
+                                                    }
+                                                }
+                                        
+                                            }
+                                        ]
+                                    }
+                                   
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getAllBookFailed": {
+                "description": "fail to get all book",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Get All Book"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getBookByIdSuccess": {
+                "description": "success get book by ID",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 200
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Get Book By ID"
+                                },
+                                "data": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "Rich Dad Poor Dad"
+                                        },
+                                        "file_foto": {
+                                            "type": "string",
+                                            "example": "sdJksHJ12ks.jpg"
+                                        },
+                                        "rent_price": {
+                                            "type": "integer",
+                                            "example": 500
+                                        },
+                                        "address": {
+                                            "type": "string",
+                                            "example": "Depok"
+                                        },
+                                        "author": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Robert Kiyosaki"
+                                                }
+                                            }
+                                        },
+                                        "publisher": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "name": {
+                                                    "type": "integer",
+                                                    "example": "Gramedia"
+                                                }
+                                            }
+                                        },
+                                        "category": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 4
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Motivasi"
+                                                }
+                                            }
+                                        },
+                                        "is_available": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getBookByIdFailed": {
+                "description": "fail to get book by ID",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "code": {
+                                    "type": "number",
+                                    "example": 400
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Get Book By ID"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "searchBookByKeywordSuccess": {
+                "description": "success search book",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Seach Book"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "title": {
+                                                "type": "string",
+                                                "example": "Rich Dad Poor Dad"
+                                            },
+                                            "file_foto": {
+                                                "type": "string",
+                                                "example": "sdJksHJ12ks.jpg"
+                                            },
+                                            "rent_price": {
+                                                "type": "integer",
+                                                "example": 500
+                                            },
+                                            "address": {
+                                                "type": "string",
+                                                "example": "Depok"
+                                            },
+                                            "author": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 3
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Robert Kiyosaki"
+                                                    }
+                                                }
+                                            },
+                                            "publisher": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 2
+                                                    },
+                                                    "name": {
+                                                        "type": "integer",
+                                                        "example": "Gramedia"
+                                                    }
+                                                }
+                                            },
+                                            "category": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 4
+                                                    },
+                                                    "name": {
+                                                        "type": "string",
+                                                        "example": "Motivasi"
+                                                    }
+                                                }
+                                            },
+                                            "is_available": {
+                                                "type": "boolean",
+                                                "example": true
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "searchBookByKeywordFailed": {
+                "description": "fail to search book",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Search Book"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getListCategorySuccess": {
+                "description": "success get list category",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Get List Category"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 2
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Sejarah"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getListCategoryFailed": {
+                "description": "fail to get list category",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Get List Category"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getListPublisherSuccess": {
+                "description": "success get list publisher",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Get List Publisher"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 2
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Gramedia"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getListPublisherFailed": {
+                "description": "fail to get list publisher",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Get List Publisher"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getListAuthorSuccess": {
+                "description": "success get list author",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Get List Author"
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer",
+                                                "example": 1
+                                            },
+                                            "name": {
+                                                "type": "string",
+                                                "example": "JK. Rowling"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getListAuthorFailed": {
+                "description": "fail to get list author",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Get List Author"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getTransactionSuccess": {
+                "description": "success get transaction",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Get Transaction"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "getTransactionFailed": {
+                "description": "fail to get transaction",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Get Transaction"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "createTransactionSuccess": {
+                "description": "success create transaction",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Success Create Transaction"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "createTransactionFailed": {
+                "description": "fail to create transaction",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Fail to Create Transaction"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "operationSuccess": {
+                "description": "operation success",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "success"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Operation Success"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "operationFailed": {
+                "description": "operation failed",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "string",
+                                    "example": "fail"
+                                },
+                                "message": {
+                                    "type": "string",
+                                    "example": "Operation Failed"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
