@@ -12,6 +12,7 @@ type Core struct {
 	Role        string `sql:"type:ENUM('ADMIN', 'DEFAULT')" gorm:"column:role"`
 	PhoneNumber string
 	IdTeam      int
+	Team        string
 	Status      bool
 	IsDeleted   bool
 	CreatedAt   time.Time
@@ -22,10 +23,14 @@ type UserDataInterface interface {
 	Login(email string, password string) (dataLogin Core, err error)
 	SelectUserById(id string) (dataUser Core, err error)
 	CreateUser(idUser string, input Core) (dataRegister Core, err error)
+	SelectAllUser() ([]Core, error)
+	DeleteUser(idProject string) (dataUser Core, err error)
 }
 
 type UserServiceInterface interface {
 	Login(email string, password string) (dataLogin Core, token string, err error)
 	GetUserById(id string) (dataUser Core, err error)
 	CreateUser(idUser string, input Core) (dataRegister Core, err error)
+	GetAllUser() ([]Core, error)
+	DeleteUser(idProject string) (dataUser Core, err error)
 }

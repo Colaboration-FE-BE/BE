@@ -98,7 +98,7 @@ func (handler *UserHandler) CreateNewUser(c echo.Context) error {
 
 	id := uuid.New()
 	idUser := id.String()
-	dataRegister, err := handler.userService.CreateUser(idUser, userCore)
+	_, err := handler.userService.CreateUser(idUser, userCore)
 	if err != nil {
 		if strings.Contains(err.Error(), "validation") {
 			return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, err.Error(), nil))
@@ -107,15 +107,56 @@ func (handler *UserHandler) CreateNewUser(c echo.Context) error {
 
 		}
 	}
-	fmt.Print("DATA REGISTER", dataRegister)
-	// fmt.Print(token)
+
 	response := map[string]any{
 		"user_id":   idUser,
 		"full_name": userInput.Fullname,
 		"password":  userInput.Password,
 		"role":      "DEFAULT",
 		"id_team":   userInput.IdTeam,
-		// "user_name": dataRegister.Username,
 	}
 	return c.JSON(http.StatusOK, helpers.WebResponse(http.StatusCreated, "success register", response))
+}
+
+func (handler *UserHandler) GetAllUsers(c echo.Context) error {
+
+	var usersResponse []UserResponse
+	result, err := handler.userService.GetAllUser()
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusInternalServerError, "error read data", nil))
+	}
+	for _, value := range result {
+		usersResponse = append(usersResponse, UserResponse{
+			ID:        value.ID,
+			Fullname:  value.Fullname,
+			Email:     value.Email,
+			Team:      value.Team,
+			Role:      value.Role,
+			Status:    value.Status,
+			CreatedAt: value.CreatedAt,
+			UpdatedAt: value.UpdatedAt,
+		})
+	}
+	fmt.Println(usersResponse)
+	// for _, v := range v {
+
+	// }
+	return c.JSON(http.StatusOK, helpers.WebResponse(http.StatusOK, "success get all user data", usersResponse))
+}
+
+func (handler *UserHandler) DeleteUser(c echo.Context) error {
+	id := c.Param("user_id")
+
+	fmt.Println("ID USER", id)
+
+	_, err := handler.userService.DeleteUser(id)
+	if err != nil {
+		if strings.Contains(err.Error(), "validation") {
+			return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, err.Error(), nil))
+		} else {
+			return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusInternalServerError, "error delete data", nil))
+
+		}
+	}
+	return c.JSON(http.StatusOK, helpers.WebResponse(http.StatusOK, "success Deactivate user", nil))
 }

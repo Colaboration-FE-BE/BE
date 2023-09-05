@@ -8,6 +8,10 @@ import (
 	_userHandler "immersive-dash-4/features/user/handler"
 	_userService "immersive-dash-4/features/user/service"
 
+	_classData "immersive-dash-4/features/class/data"
+	_classHandler "immersive-dash-4/features/class/handler"
+	_classService "immersive-dash-4/features/class/service"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -16,6 +20,10 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	userData := _userData.New(db)
 	userService := _userService.New(userData)
 	userHandlerAPI := _userHandler.New(userService)
+
+	classData := _classData.New(db)
+	classService := _classService.New(classData)
+	classHandlerAPI := _classHandler.New(classService)
 
 	e.GET("/", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]any{
@@ -29,4 +37,9 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	//Users
 	e.GET("/users/:user_id", userHandlerAPI.GetUserById, middlewares.JWTMiddleware())
 	e.POST("/users", userHandlerAPI.CreateNewUser, middlewares.JWTMiddleware())
+	e.GET("/users", userHandlerAPI.GetAllUsers, middlewares.JWTMiddleware())
+	e.DELETE("/users/:user_id", userHandlerAPI.DeleteUser, middlewares.JWTMiddleware())
+
+	//Class
+	e.GET("/class", classHandlerAPI.GetAllClass, middlewares.JWTMiddleware())
 }
