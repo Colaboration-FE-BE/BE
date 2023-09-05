@@ -50,3 +50,13 @@ func (service *userService) CreateUser(idUser string, input user.Core) (dataRegi
 	// }
 	return dataRegister, nil
 }
+
+// GetAllUser implements user.UserServiceInterface.
+func (service *userService) GetAllUser() ([]user.Core, error) {
+	return service.userData.SelectAllUser()
+}
+
+// DeleteUser implements user.UserServiceInterface.
+func (service *userService) DeleteUser(idProject string) (dataUser user.Core, err error) {
+	return service.userData.DeleteUser(idProject)
+}
