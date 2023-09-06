@@ -14,8 +14,12 @@ type Core struct {
 
 type ClassDataInterface interface {
 	SelectAllClass() ([]Core, error)
+	InsertClass(class Core) (input Core, err error)
+	SelectClassById(id uint) (Core, error)
 }
 
 type ClassServiceInterface interface {
 	GetAllClass() ([]Core, error)
+	CreateClass(class Core) (input Core, err error)
+	GetClassById(id uint) (Core, error)
 }

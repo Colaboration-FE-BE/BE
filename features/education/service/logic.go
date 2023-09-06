@@ -1,24 +1,25 @@
 package service
 
 import (
-	"immersive-dash-4/features/class"
+	"immersive-dash-4/features/education"
 
 	"github.com/go-playground/validator/v10"
 )
 
-type classService struct {
-	classData class.ClassDataInterface
+type educationService struct {
+	classData education.EducationDataInterface
 	validate  *validator.Validate
 }
 
-func New(repo class.ClassDataInterface) class.ClassServiceInterface {
-	return &classService{
+func New(repo education.EducationDataInterface) education.EducationServiceInterface {
+	return &educationService{
 		classData: repo,
 		validate:  validator.New(),
 	}
 }
 
 // GetAllUser implements user.UserServiceInterface.
-func (service *classService) GetAllClass() ([]class.Core, error) {
-	return service.classData.SelectAllClass()
+func (service *educationService) GetAllEducation() ([]education.Core, error) {
+	panic("Unimplement")
+	// return service.classData.SelectAllClass()
 }

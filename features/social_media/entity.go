@@ -8,10 +8,10 @@ type Core struct {
 	Phone    string `validate:"required"`
 }
 
-type EmergencyDataInterface interface {
+type SocialMediaDataInterface interface {
 	// SelectAllClass() ([]Core, error)
 }
 
-type EmergencyServiceInterface interface {
+type SocialMediaServiceInterface interface {
 	// GetAllClass() ([]Core, error)
 }

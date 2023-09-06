@@ -85,6 +85,7 @@ func ModelToCore(dataModel User) user.Core {
 		ID:          dataModel.ID,
 		Fullname:    dataModel.Fullname,
 		Role:        dataModel.Role,
+		IdTeam:      dataModel.IdTeam,
 		Email:       dataModel.Email,
 		Password:    dataModel.Password,
 		PhoneNumber: dataModel.PhoneNumber,

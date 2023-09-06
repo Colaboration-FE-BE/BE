@@ -5,11 +5,17 @@ import (
 	"immersive-dash-4/features/user"
 
 	"github.com/go-playground/validator/v10"
+	echo "github.com/labstack/echo/v4"
 )
 
 type userService struct {
 	userData user.UserDataInterface
 	validate *validator.Validate
+}
+
+// GetAllUser implements user.UserServiceInterface.
+func (service *userService) GetAllUser(c echo.Context) ([]user.Core, error) {
+	return service.userData.SelectAllUser(c)
 }
 
 func New(repo user.UserDataInterface) user.UserServiceInterface {
@@ -51,12 +57,14 @@ func (service *userService) CreateUser(idUser string, input user.Core) (dataRegi
 	return dataRegister, nil
 }
 
-// GetAllUser implements user.UserServiceInterface.
-func (service *userService) GetAllUser() ([]user.Core, error) {
-	return service.userData.SelectAllUser()
+// DeleteUser implements user.UserServiceInterface.
+func (service *userService) DeleteUser(idUser string) (dataUser user.DeleteCore, err error) {
+	result, err := service.userData.DeleteUser(idUser)
+	return result, err
 }
 
-// DeleteUser implements user.UserServiceInterface.
-func (service *userService) DeleteUser(idProject string) (dataUser user.Core, err error) {
-	return service.userData.DeleteUser(idProject)
+// UpdateUser implements user.UserServiceInterface.
+func (service *userService) UpdateUser(c echo.Context, idUser string, input user.Core) (dataUser user.DeleteCore, err error) {
+	result, err := service.userData.EditUser(c, idUser, input)
+	return result, err
 }
