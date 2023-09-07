@@ -2,18 +2,20 @@
 FROM golang:1.21.0-alpine
 
 # membuat direktori folder
-RUN mkdir /app
+# RUN mkdir /app
 
 # set working direktori i
 WORKDIR /app
 
-COPY ./ /app
+# Installing dependencies
+COPY go.mod go.sum ./
+RUN go mod download
 
+# Copying all the files
+COPY . .
 
-RUN go mod tidy
+# Starting our application
+CMD ["go", "run", "main.go"]
 
-#create executable
-RUN go build -o beapl
-
-# run executable file
-CMD ["./beapi"]
+# Exposing server port
+EXPOSE 5000
