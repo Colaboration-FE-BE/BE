@@ -4,7 +4,7 @@ FROM golang:1.21.0-alpine
 # membuat direktori folder
 RUN mkdir /app
 
-# set working direktori
+# set working direktori i
 WORKDIR /app
 
 COPY ./ /app
