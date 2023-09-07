@@ -11,9 +11,11 @@ import (
 func InitDBMysql(cfg *config.AppConfig) *gorm.DB {
 	// declare struct config & variable connectionString
 	// usernama:password@tcp(hostdb:portdb)/db_name
-	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
-		cfg.DB_USERNAME, cfg.DB_PASSWORD, cfg.DB_HOSTNAME, cfg.DB_PORT, cfg.DB_NAME)
+	// connectionString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
+	// 	cfg.DB_USERNAME, cfg.DB_PASSWORD, cfg.DB_HOSTNAME, cfg.DB_PORT, cfg.DB_NAME)
 
+	connectionString := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local",
+		"root", "123", "34.101.64.219", 3306, "immersive-dash-4")
 	db, err := gorm.Open(mysql.Open(connectionString), &gorm.Config{})
 
 	if err != nil {

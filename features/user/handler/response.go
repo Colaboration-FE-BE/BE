@@ -10,5 +10,5 @@ type UserResponse struct {
 	Role      string    `json:"role"`
 	Status    bool      `json:"status"`
 	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"uptadeted_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

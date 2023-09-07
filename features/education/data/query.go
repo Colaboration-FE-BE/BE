@@ -1,22 +1,22 @@
 package data
 
 import (
-	"immersive-dash-4/features/class"
+	"immersive-dash-4/features/education"
 
 	"gorm.io/gorm"
 )
 
-type classQuery struct {
+type educationQuery struct {
 	db *gorm.DB
 }
 
 // SelectAllClass implements class.ClassDataInterface.
-func (*classQuery) SelectAllClass() ([]class.Core, error) {
+func (*educationQuery) SelectAllClass() ([]education.Core, error) {
 	panic("unimplemented")
 }
 
-func New(db *gorm.DB) class.ClassDataInterface {
-	return &classQuery{
+func New(db *gorm.DB) education.EducationDataInterface {
+	return &educationQuery{
 		db: db,
 	}
 }

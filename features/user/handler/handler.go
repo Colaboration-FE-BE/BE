@@ -9,6 +9,7 @@ import (
 	"immersive-dash-4/helpers"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
@@ -40,7 +41,7 @@ func (handler *UserHandler) Login(c echo.Context) error {
 		if strings.Contains(err.Error(), "validation") {
 			return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, err.Error(), nil))
 		} else {
-			return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusInternalServerError, "error login", nil))
+			return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusInternalServerError, "Email or password wrong please check again", nil))
 
 		}
 	}
@@ -103,7 +104,7 @@ func (handler *UserHandler) CreateNewUser(c echo.Context) error {
 		if strings.Contains(err.Error(), "validation") {
 			return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, err.Error(), nil))
 		} else {
-			return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusInternalServerError, "error register", nil))
+			return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusInternalServerError, "User with this email has alrady registered", nil))
 
 		}
 	}
@@ -121,9 +122,9 @@ func (handler *UserHandler) CreateNewUser(c echo.Context) error {
 func (handler *UserHandler) GetAllUsers(c echo.Context) error {
 
 	var usersResponse []UserResponse
-	result, err := handler.userService.GetAllUser()
+	result, err := handler.userService.GetAllUser(c)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusInternalServerError, "error read data", nil))
+		return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusInternalServerError, "error read data", err.Error()))
 	}
 	for _, value := range result {
 		usersResponse = append(usersResponse, UserResponse{
@@ -149,14 +150,58 @@ func (handler *UserHandler) DeleteUser(c echo.Context) error {
 
 	fmt.Println("ID USER", id)
 
-	_, err := handler.userService.DeleteUser(id)
+	result, err := handler.userService.DeleteUser(id)
 	if err != nil {
 		if strings.Contains(err.Error(), "validation") {
 			return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, err.Error(), nil))
 		} else {
-			return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusInternalServerError, "error delete data", nil))
+			return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusNotFound, "User Not found", nil))
 
 		}
 	}
-	return c.JSON(http.StatusOK, helpers.WebResponse(http.StatusOK, "success Deactivate user", nil))
+	response := UserResponse{
+		ID:        result.ID,
+		Fullname:  result.Fullname,
+		Email:     result.Email,
+		Role:      result.Role,
+		Team:      result.Team,
+		CreatedAt: result.CreatedAt,
+		UpdatedAt: time.Now(),
+	}
+	return c.JSON(http.StatusOK, helpers.WebResponse(http.StatusOK, "success Deactivate user", response))
+}
+
+func (handler *UserHandler) UpdateUser(c echo.Context) error {
+	id := c.Param("user_id")
+
+	userInput := new(UserRequest)
+	errBind := c.Bind(&userInput) // mendapatkan data yang dikirim oleh FE melalui request body
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, "error bind data. data not valid", nil))
+	}
+
+	userCore := RequestToCore(*userInput)
+	result, err := handler.userService.UpdateUser(c, id, userCore)
+	if err != nil {
+		if strings.Contains(err.Error(), "validation") {
+			return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, err.Error(), nil))
+		}
+		if strings.Contains(err.Error(), "Duplicate entry") {
+			return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, err.Error(), nil))
+		} else {
+			return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusNotFound, err.Error(), nil))
+
+		}
+	}
+	response := UserResponse{
+		ID:        result.ID,
+		Fullname:  result.Fullname,
+		Email:     result.Email,
+		Role:      result.Role,
+		Team:      result.Team,
+		CreatedAt: result.CreatedAt,
+		UpdatedAt: time.Now(),
+	}
+
+	return c.JSON(http.StatusOK, helpers.WebResponse(http.StatusOK, "success Update User", response))
 }

@@ -1,28 +1,24 @@
 package handler
 
-import "immersive-dash-4/features/user"
+import (
+	"immersive-dash-4/features/class"
+	"time"
+)
 
-type LoginRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+type ClassRequest struct {
+	ID           uint      `json:"id"`
+	Name         string    `json:"name"`
+	PicId        string    `json:"pic_id"`
+	StartDate    time.Time `json:"start_date"`
+	GraduateDate time.Time `json:"graduate_date"`
 }
 
-type UserRequest struct {
-	Fullname    string `json:"full_name"`
-	Email       string `json:"email"`
-	Status      bool   `json:"status"`
-	Password    string `json:"password"`
-	PhoneNumber string `json:"phone_number"`
-	IdTeam      int    `json:"id_team"`
-}
-
-func RequestToCore(input UserRequest) user.Core {
-	return user.Core{
-		Fullname:    input.Fullname,
-		Email:       input.Email,
-		Status:      input.Status,
-		Password:    input.Password,
-		PhoneNumber: input.PhoneNumber,
-		IdTeam:      input.IdTeam,
+func RequestToCore(input ClassRequest) class.Core {
+	return class.Core{
+		ID:           input.ID,
+		Name:         input.Name,
+		PicId:        input.PicId,
+		StartDate:    input.StartDate,
+		GraduateDate: input.GraduateDate,
 	}
 }

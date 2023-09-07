@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"immersive-dash-4/features/class"
 
 	"github.com/go-playground/validator/v10"
@@ -21,4 +22,17 @@ func New(repo class.ClassDataInterface) class.ClassServiceInterface {
 // GetAllUser implements user.UserServiceInterface.
 func (service *classService) GetAllClass() ([]class.Core, error) {
 	return service.classData.SelectAllClass()
+}
+
+// CreateClass implements class.ClassServiceInterface.
+func (service *classService) CreateClass(class class.Core) (input class.Core, err error) {
+	fmt.Println("INPUT SERVICE", class)
+	result, err := service.classData.InsertClass(class)
+	fmt.Println("SERVICE ID SDJDKADK", result.ID)
+	return result, err
+}
+
+// GetClassById implements class.ClassServiceInterface.
+func (service *classService) GetClassById(id uint) (class.Core, error) {
+	return service.classData.SelectClassById(id)
 }

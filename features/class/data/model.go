@@ -18,6 +18,17 @@ type Class struct {
 	GraduateDate time.Time
 }
 
+func CoreToModel(dataCore class.Core) Class {
+	return Class{
+		Model:        gorm.Model{},
+		Name:         dataCore.Name,
+		PicId:        dataCore.PicId,
+		User:         _userData.User{},
+		StartDate:    dataCore.StartDate,
+		GraduateDate: dataCore.GraduateDate,
+	}
+}
+
 // mapping struct model to struct core
 func ModelToCore(dataModel Class) class.Core {
 

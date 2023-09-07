@@ -7,10 +7,10 @@ type Core struct {
 	MenteeId string `validate:"required"`
 }
 
-type EmergencyDataInterface interface {
+type EducationDataInterface interface {
 	// SelectAllClass() ([]Core, error)
 }
 
-type EmergencyServiceInterface interface {
+type EducationServiceInterface interface {
 	// GetAllClass() ([]Core, error)
 }

@@ -8,6 +8,8 @@ import (
 	_userData "immersive-dash-4/features/user"
 	"immersive-dash-4/helpers"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
@@ -57,4 +59,61 @@ func (handler *ClassHandler) GetAllClass(c echo.Context) error {
 
 	// }
 	return c.JSON(http.StatusOK, helpers.WebResponse(http.StatusOK, "success get Class", classResponse))
+}
+
+func (handler *ClassHandler) CreateClass(c echo.Context) error {
+	classInput := new(ClassRequest)
+
+	errBind := c.Bind(&classInput)
+
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, "error bind data. data not valid", nil))
+	}
+	classCore := RequestToCore(*classInput)
+	fmt.Println("RESULT HANDLER", classCore)
+	result, err := handler.classService.CreateClass(classCore)
+	fmt.Println("RESULT HANDLER====", result)
+	if err != nil {
+		if strings.Contains(err.Error(), "validation") {
+			return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, err.Error(), nil))
+		} else {
+			return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusInternalServerError, err.Error(), nil))
+
+		}
+	}
+	resultResponse := ClassResponse{
+		ID:           int(result.ID),
+		Name:         result.Name,
+		Pic:          result.PicId,
+		StartDate:    result.StartDate,
+		GraduateDate: result.GraduateDate,
+	}
+	return c.JSON(http.StatusOK, helpers.WebResponse(http.StatusCreated, "success register new class", resultResponse))
+}
+
+func (handler *ClassHandler) GetClassById(c echo.Context) error {
+	id := c.Param("class_id")
+	idConv, errConv := strconv.Atoi(id)
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, "wrong id", nil))
+	}
+
+	result, err := handler.classService.GetClassById(uint(idConv))
+	if err != nil {
+		if strings.Contains(err.Error(), "validation") {
+			return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, err.Error(), nil))
+		} else {
+			return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusInternalServerError, "error insert data", nil))
+
+		}
+	}
+
+	resultResponse := ClassResponse{
+		ID:           idConv,
+		Name:         result.Name,
+		Pic:          result.PicId,
+		StartDate:    result.StartDate,
+		GraduateDate: result.GraduateDate,
+	}
+	return c.JSON(http.StatusOK, helpers.WebResponse(http.StatusOK, "success read class", resultResponse))
 }

@@ -11,6 +11,16 @@ type classService struct {
 	validate  *validator.Validate
 }
 
+// CreateClass implements class.ClassServiceInterface.
+func (*classService) CreateClass(class class.Core) (input class.Core, err error) {
+	panic("unimplemented")
+}
+
+// GetClassById implements class.ClassServiceInterface.
+func (*classService) GetClassById(id uint) (class.Core, error) {
+	panic("unimplemented")
+}
+
 func New(repo class.ClassDataInterface) class.ClassServiceInterface {
 	return &classService{
 		classData: repo,
