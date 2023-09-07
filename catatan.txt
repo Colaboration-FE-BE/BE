@@ -1,0 +1,2 @@
+docker build -t immersive-dash-4:latest .
+docker build -t teguh26/immersive-dash-4:latest .
