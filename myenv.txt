@@ -1,0 +1,6 @@
+DBUSER='freedb_teguh'
+DBPASS='md#q4E$zNX4M6my'
+DBHOST='sql.freedb.tech'
+DBPORT='3306'
+DBNAME='freedb_immersive-dash-4'
+JWTSECRET='sup3rs3cr3t'

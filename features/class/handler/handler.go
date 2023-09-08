@@ -117,3 +117,28 @@ func (handler *ClassHandler) GetClassById(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, helpers.WebResponse(http.StatusOK, "success read class", resultResponse))
 }
+
+func (handler *ClassHandler) DeleteClass(c echo.Context) error {
+	id := c.Param("class_id")
+
+	idClass, errConv := strconv.Atoi(id)
+	fmt.Println("ID CLASS", idClass)
+
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, map[string]any{
+			"message": "error. id should be number",
+		})
+	}
+
+	err := handler.classService.DeleteClass(idClass)
+	fmt.Println("DEBUG", err)
+	if err != nil {
+		if strings.Contains(err.Error(), "validation") {
+			return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, err.Error(), nil))
+		} else {
+			return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusInternalServerError, "error insert data", nil))
+
+		}
+	}
+	return c.JSON(http.StatusOK, helpers.WebResponse(http.StatusOK, "success Delete Class", nil))
+}

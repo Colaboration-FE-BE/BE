@@ -1,34 +1,19 @@
 package service
 
 import (
-	"immersive-dash-4/features/class"
+	"immersive-dash-4/features/feedback"
 
 	"github.com/go-playground/validator/v10"
 )
 
 type classService struct {
-	classData class.ClassDataInterface
-	validate  *validator.Validate
+	feedbackData feedback.FeedbackDataInterface
+	validate     *validator.Validate
 }
 
-// CreateClass implements class.ClassServiceInterface.
-func (*classService) CreateClass(class class.Core) (input class.Core, err error) {
-	panic("unimplemented")
-}
-
-// GetClassById implements class.ClassServiceInterface.
-func (*classService) GetClassById(id uint) (class.Core, error) {
-	panic("unimplemented")
-}
-
-func New(repo class.ClassDataInterface) class.ClassServiceInterface {
+func New(repo feedback.FeedbackDataInterface) feedback.FeedbackServiceInterface {
 	return &classService{
-		classData: repo,
-		validate:  validator.New(),
+		feedbackData: repo,
+		validate:     validator.New(),
 	}
-}
-
-// GetAllUser implements user.UserServiceInterface.
-func (service *classService) GetAllClass() ([]class.Core, error) {
-	return service.classData.SelectAllClass()
 }

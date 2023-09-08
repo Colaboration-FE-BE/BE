@@ -1,7 +1,6 @@
 package middlewares
 
 import (
-	"immersive-dash-4/app/config"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -22,7 +21,7 @@ func CreateToken(userId string) (string, error) {
 	claims["userId"] = userId
 	claims["exp"] = time.Now().Add(time.Hour * 1).Unix() //Token expires after 1 hour
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(config.JWT_SECRET))
+	return token.SignedString([]byte("sup3rs3cr3t"))
 
 }
 

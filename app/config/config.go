@@ -79,7 +79,7 @@ func ReadEnv() *AppConfig {
 		app.DB_HOSTNAME = viper.Get("DBHOST").(string)
 		app.DB_PORT, _ = strconv.Atoi(viper.Get("DBPORT").(string))
 		app.DB_NAME = viper.Get("DBNAME").(string)
-		JWT_SECRET = viper.Get("JWTSECRET").(string)
+		JWT_SECRET = "sup3rs3cr3t"
 	}
 
 	return &app

@@ -1,9 +1,13 @@
-docker build -t immersive-dash-4:latest .
 docker build -t teguh26/immersive-dash-4:latest .
 
 docker run -d -it –-rm -p [host_port]:[container_port] --name [container_name] [image_id/image_tag]
 
+contoh : docker run -d -p 8080:8080 teguh26/immersive-dash-4:latest  
 push docker registry
 
 docker login -u teguh26  
 docker push teguh26/immersive-dash-4   
+
+docker run -it teguh26/immersive-dash-4 sh 
+
+gcloud run gcloud run deploy immersive-dash-4 --image teguh26/immersive-dash-4 --project altera-academy

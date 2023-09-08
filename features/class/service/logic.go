@@ -36,3 +36,9 @@ func (service *classService) CreateClass(class class.Core) (input class.Core, er
 func (service *classService) GetClassById(id uint) (class.Core, error) {
 	return service.classData.SelectClassById(id)
 }
+
+// DeleteClass implements class.ClassServiceInterface.
+func (service *classService) DeleteClass(idClass int) error {
+	err := service.classData.DeleteClass(idClass)
+	return err
+}

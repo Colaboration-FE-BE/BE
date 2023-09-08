@@ -76,3 +76,17 @@ func (repo *classQuery) SelectClassById(id uint) (class.Core, error) {
 
 	return class, nil
 }
+
+// DeleteClass implements class.ClassDataInterface.
+func (repo *classQuery) DeleteClass(idClass int) error {
+	var classData Class
+	tx := repo.db.Exec("DELETE FROM classes WHERE id=?", idClass)
+
+	if tx.Error != nil {
+		return tx.Error
+	}
+	fmt.Println("DELETE QUERU", tx)
+	fmt.Println("class data", &classData)
+	return nil
+
+}
