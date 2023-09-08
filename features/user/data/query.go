@@ -35,8 +35,13 @@ func (repo *userQuery) SelectAllUser(c echo.Context) ([]user.Core, error) {
 			return nil, tx.Error
 		}
 
-	} else {
+	} else if page != "" {
 		tx := repo.db.Raw("SELECT*FROM users WHERE is_deleted=0 ORDER BY created_at DESC LIMIT? OFFSET?", limit, offset).Scan(&usersData)
+		if tx.Error != nil {
+			return nil, tx.Error
+		}
+	} else {
+		tx := repo.db.Raw("SELECT*FROM users ").Scan(&usersData)
 		if tx.Error != nil {
 			return nil, tx.Error
 		}

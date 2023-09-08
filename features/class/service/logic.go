@@ -5,6 +5,7 @@ import (
 	"immersive-dash-4/features/class"
 
 	"github.com/go-playground/validator/v10"
+	echo "github.com/labstack/echo/v4"
 )
 
 type classService struct {
@@ -41,4 +42,10 @@ func (service *classService) GetClassById(id uint) (class.Core, error) {
 func (service *classService) DeleteClass(idClass int) error {
 	err := service.classData.DeleteClass(idClass)
 	return err
+}
+
+// UpdateUser implements class.ClassServiceInterface.
+func (service *classService) UpdateClass(c echo.Context, idClass int, input class.Core) (dataUser class.Core, err error) {
+	result, err := service.classData.EditClass(c, idClass, input)
+	return result, err
 }

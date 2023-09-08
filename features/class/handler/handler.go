@@ -118,6 +118,46 @@ func (handler *ClassHandler) GetClassById(c echo.Context) error {
 	return c.JSON(http.StatusOK, helpers.WebResponse(http.StatusOK, "success read class", resultResponse))
 }
 
+func (handler *ClassHandler) UpdateClass(c echo.Context) error {
+	id := c.Param("class_id")
+	idClass, errConv := strconv.Atoi(id)
+	if errConv != nil {
+		return c.JSON(http.StatusBadRequest, map[string]any{
+			"message": "error. id should be number",
+		})
+	}
+
+	classInput := new(ClassRequest)
+
+	errBind := c.Bind(&classInput) // mendapatkan data yang dikirim oleh FE melalui request body
+	if errBind != nil {
+		return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, "error bind data. data not valid", nil))
+	}
+	classInput.ID = uint(idClass)
+	classCore := RequestToCore(*classInput)
+	result, err := handler.classService.UpdateClass(c, idClass, classCore)
+	if err != nil {
+		if strings.Contains(err.Error(), "validation") {
+			return c.JSON(http.StatusBadRequest, helpers.WebResponse(http.StatusBadRequest, err.Error(), nil))
+		} else {
+			return c.JSON(http.StatusInternalServerError, helpers.WebResponse(http.StatusNotFound, err.Error(), nil))
+
+		}
+	}
+
+	fmt.Println("RESULT UPDATE CLASS", result)
+
+	response := ClassResponse{
+		ID:           int(classInput.ID),
+		Name:         classInput.Name,
+		Pic:          classCore.PicId,
+		StartDate:    classCore.StartDate,
+		GraduateDate: classCore.GraduateDate,
+	}
+
+	return c.JSON(http.StatusOK, helpers.WebResponse(http.StatusOK, "success Update Class", response))
+}
+
 func (handler *ClassHandler) DeleteClass(c echo.Context) error {
 	id := c.Param("class_id")
 

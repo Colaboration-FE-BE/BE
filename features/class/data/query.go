@@ -6,6 +6,7 @@ import (
 	"immersive-dash-4/features/class"
 	"time"
 
+	echo "github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
 
@@ -79,14 +80,27 @@ func (repo *classQuery) SelectClassById(id uint) (class.Core, error) {
 
 // DeleteClass implements class.ClassDataInterface.
 func (repo *classQuery) DeleteClass(idClass int) error {
-	var classData Class
+
 	tx := repo.db.Exec("DELETE FROM classes WHERE id=?", idClass)
 
 	if tx.Error != nil {
 		return tx.Error
 	}
-	fmt.Println("DELETE QUERU", tx)
-	fmt.Println("class data", &classData)
+
 	return nil
 
+}
+
+// EditClass implements class.ClassDataInterface.
+func (repo *classQuery) EditClass(c echo.Context, idClass int, input class.Core) (dataClass class.Core, err error) {
+
+	if input.Name == "" || input.PicId == "" {
+		return dataClass, errors.New("validation error.all field are required")
+	}
+	tx := repo.db.Exec("UPDATE classes SET name= ?, pic_id=?,start_date=?,graduate_date=? WHERE id=?", input.Name, input.PicId, input.StartDate, input.GraduateDate, input.ID)
+	fmt.Println("TARKWRRKA", tx)
+	if tx.Error != nil {
+		return dataClass, tx.Error
+	}
+	return dataClass, nil
 }
