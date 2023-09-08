@@ -12,6 +12,10 @@ import (
 	_classHandler "immersive-dash-4/features/class/handler"
 	_classService "immersive-dash-4/features/class/service"
 
+	_menteeData "immersive-dash-4/features/mentee/data"
+	_menteeHandler "immersive-dash-4/features/mentee/handler"
+	_menteeService "immersive-dash-4/features/mentee/service"
+
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
@@ -24,6 +28,10 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	classData := _classData.New(db)
 	classService := _classService.New(classData)
 	classHandlerAPI := _classHandler.New(classService)
+
+	menteeData := _menteeData.New(db)
+	menteeService := _menteeService.New(menteeData)
+	menteeHandlerAPI := _menteeHandler.New(menteeService)
 
 	e.GET("/", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, map[string]any{
@@ -47,4 +55,7 @@ func InitRouter(db *gorm.DB, e *echo.Echo) {
 	e.GET("/class/:class_id", classHandlerAPI.GetClassById, middlewares.JWTMiddleware())
 	e.PUT("/class/:class_id", classHandlerAPI.UpdateClass, middlewares.JWTMiddleware())
 	e.DELETE("/class/:class_id", classHandlerAPI.DeleteClass, middlewares.JWTMiddleware())
+
+	//mentee
+	e.GET("/mentees", menteeHandlerAPI.GetAllMentee)
 }

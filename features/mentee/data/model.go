@@ -1,10 +1,14 @@
 package data
 
 import (
+	"fmt"
 	_classData "immersive-dash-4/features/class/data"
 	"immersive-dash-4/features/mentee"
 
 	"time"
+
+	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
 type Mentee struct {
@@ -12,13 +16,39 @@ type Mentee struct {
 	Fullname    string
 	IdClass     int
 	Class       _classData.Class `json:"location,omitempty" gorm:"foreignKey:IdClass;references:ID"`
-	Status      string           `sql:"type:ENUM('PLACEMENT', 'ACTIVE','ELIMINATE')" gorm:"column:status"`
+	Status      string
+	Category    string
 	Address     string
 	HomeAddress string
 	Gender      bool
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 	DeletedAt   time.Time
+}
+
+func MenteeSeeder(db *gorm.DB) {
+	id := uuid.New()
+	var menteeSeeder = []Mentee{
+		{
+			ID:          id.String(),
+			Fullname:    "Aldi Taher",
+			IdClass:     5,
+			Class:       _classData.Class{},
+			Status:      "Graduated",
+			Category:    "NON IT",
+			Address:     "Bandung",
+			HomeAddress: "Bandung no 50",
+			Gender:      true,
+			CreatedAt:   time.Time{},
+			UpdatedAt:   time.Time{},
+			DeletedAt:   time.Now(),
+		},
+	}
+
+	result := db.Create(menteeSeeder) // pass a slice to insert multiple row
+	fmt.Println(result)
+	// result.Error                    // returns error
+	// result.RowsAffected             // returns inserted records count
 }
 
 // func MenteeSeeder(db *gorm.DB) {

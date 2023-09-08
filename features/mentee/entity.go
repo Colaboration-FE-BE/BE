@@ -2,11 +2,14 @@ package mentee
 
 import (
 	"time"
+
+	"github.com/labstack/echo/v4"
 )
 
 type Core struct {
 	ID          string `gorm:"type:varchar(255)" json:"id"`
 	Fullname    string `validate:"required"`
+	Category    string
 	IdClass     int
 	Class       string
 	Status      string `sql:"type:ENUM('PLACEMENT', 'ACTIVE','ELIMINATE')" gorm:"column:status"`
@@ -19,9 +22,9 @@ type Core struct {
 }
 
 type MenteeDataInterface interface {
-	SelectAllMentee() ([]Core, error)
+	SelectAllMentee(c echo.Context) ([]Core, error)
 }
 
 type MenteeServiceInterface interface {
-	GetAllMentee() ([]Core, error)
+	GetAllMentee(c echo.Context) ([]Core, error)
 }
